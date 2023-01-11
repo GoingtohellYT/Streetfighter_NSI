@@ -9,7 +9,7 @@ class SpriteSheet:
 
     def image_at(self, rectangle):
         rect = pygame.Rect(rectangle)
-        image = pygame.Surface(rect.size).convert()
+        image = pygame.Surface(rect.size, pygame.SRCALPHA).convert()
         image.blit(self.sheet, (0, 0), rect)
         return image
     
