@@ -16,6 +16,10 @@ background = pygame.transform.scale(background, (1080, 720))
 
 quit_btn = pygame.image.load('assets/quit.png')
 quit_btn = pygame.transform.scale(quit_btn, (150, 50))
+quit_btn_rect = quit_btn.get_rect()
+quit_btn_rect.x = 700
+quit_btn_rect.y = 600
+
 
 game = Game()  # On charge la classe du jeu
 
@@ -26,7 +30,7 @@ while running:
         pass
     else:
         # ajouter l'écran de bienvenue
-        screen.blit(quit_btn, (700, 600))
+        screen.blit(quit_btn, quit_btn_rect)
 
     # mettre l'écran à jour
     pygame.display.flip()
@@ -36,3 +40,11 @@ while running:
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
+
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            # si le joueur clique sur le bouton pour quitter
+            if quit_btn_rect.collidepoint(event.pos):
+                pygame.quit()
+                exit()
+
+    clock.tick(FPS)
