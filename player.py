@@ -1,5 +1,6 @@
 import pygame
 from Spritesheet import SpriteSheet
+from animation import animation
 
 
 class Player(pygame.sprite.Sprite):
@@ -9,23 +10,24 @@ class Player(pygame.sprite.Sprite):
         self.health = 100
         self.max_health = 100
         self.attack = 10
-        self.velocity = 3
+        self.velocity = 5
         self.spritesheet = SpriteSheet("assets/player1_idle.png")
         self.image = self.spritesheet.image_at((0,0,32,64))
         self.image_index = 0
         self.rect = self.image.get_rect()
         self.rect.x = 450
         self.rect.y = 500
+        self.animation = animation()
 
-    def animate(self):
-        self.image_index += 1
-        if self.image_index == 6:
-            self.image_index = 0
+    def update(self):
+        if self.animation.state == 1:
+            if self.animation.left_direction:
+                self.rect.x -= self.velocity
+            else:
+                self.rect.x += self.velocity
 
-        self.image = self.spritesheet.image_at((self.image_index*32,0,32,64))
-
-    def move_right(self):
-        self.rect.x += self.velocity
-
-    def move_left(self):
-        self.rect.x -= self.velocity
+        self.animation.update()
+        if self.velocity!=0:
+            self.animation.state = 1
+        else:
+            self.animation.state = 0
