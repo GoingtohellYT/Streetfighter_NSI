@@ -64,4 +64,10 @@ while running:
             elif play_btn_rect.collidepoint(event.pos):
                 game.start()
 
+        elif event.type == pygame.KEYDOWN:
+            game.pressed[event.key] = True  # on ajoute la touche pressée au dict
+
+        elif event.type == pygame.KEYUP:
+            game.pressed[event.key] = False  # on retire la touche pressée du dict
+
     clock.tick(FPS)

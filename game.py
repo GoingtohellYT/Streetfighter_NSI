@@ -26,8 +26,7 @@ class Game:
         self.player.animate()
 
         # vérifier si le joueur souhaite et peut se déplacer
-        if self.pressed.get(pygame.K_RIGHT) and self.player.rect.width + self.player.rect.x < 720:
+        if self.pressed.get(pygame.K_RIGHT) and self.player.rect.width + self.player.rect.x < screen.get_width():
             self.player.move_right()
-            print(self.player.rect.x)
         elif self.pressed.get(pygame.K_LEFT) and self.player.rect.x > 0:
             self.player.move_left()
