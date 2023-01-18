@@ -23,7 +23,7 @@ class Game:
     def update(self, screen):
         # afficher le joueur
         screen.blit(self.player.image, self.player.rect)
-        self.player.animate()
+        self.player.update()
 
         # vérifier si le joueur souhaite et peut se déplacer
         if self.pressed.get(pygame.K_RIGHT) and self.player.rect.width + self.player.rect.x < screen.get_width():
