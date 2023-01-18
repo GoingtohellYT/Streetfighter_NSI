@@ -27,6 +27,10 @@ class Game:
 
         # vérifier si le joueur souhaite et peut se déplacer
         if self.pressed.get(pygame.K_RIGHT) and self.player.rect.width + self.player.rect.x < screen.get_width():
-            self.player.move_right()
+            self.player.animation.state = 1
+            self.player.animation.left_direction = False
         elif self.pressed.get(pygame.K_LEFT) and self.player.rect.x > 0:
-            self.player.move_left()
+            self.player.animation.state = 1
+            self.player.animation.left_direction = True
+        else:
+            self.player.animation.state = 0
