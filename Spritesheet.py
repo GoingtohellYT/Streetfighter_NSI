@@ -8,13 +8,12 @@ class SpriteSheet:
 
     def image_at(self, rectangle):
         rect = pygame.Rect(rectangle)
-        image = pygame.Surface(rect.size, pygame.SRCALPHA).convert_alpha()
-        image.blit(self.sheet, (0, 0), rect)
+        image = pygame.Surface(rect.size, pygame.SRCALPHA).convert_alpha() #Creer une image transparente de la taille du rectangle
+        image.blit(self.sheet, (0, 0), rect) #Peindre une partie du spritesheet sur l'image
         return image
     
     def images(self, rows, columns):
-        x=0
-        y=0
+        #Coupe le spritesheet en lignes et colonnes et enregistre chaque image dans une liste
         xStep=self.sheet.get_width()/columns
         yStep=self.sheet.get_height()/rows
         cropped_images = []
