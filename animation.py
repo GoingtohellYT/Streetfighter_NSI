@@ -3,15 +3,16 @@ import pygame
 
 class animation:
     def __init__(self):
-        self.state=1
-        self.left_direction=False
-        self.frame_rate = 4
+        self.state=0 #Etat du joueur (0: Ne bouge pas, 1: est entrain de marcher)
+        self.left_direction=False #Va à gauche ou à droite
+        self.frame_rate = 4 #L'animation du joueur change toutes les 4 frames
         self.current_frame = 0
         spritesheet = SpriteSheet('assets/player1_idle.png')
-        self.player_idle_images = spritesheet.images(1,6)
+        self.player_idle_images = spritesheet.images(1,6) #Découpe les images du joueur
         spritesheet = SpriteSheet('assets/player1_walk.png')
-        self.player_walk_images = spritesheet.images(1,6)
+        self.player_walk_images = spritesheet.images(1,6) #Découpe les images du joueur
 
+        #Redimensionner chaque image individuellement
         for i in range(len(self.player_idle_images)):
             self.player_idle_images[i] = pygame.transform.scale(self.player_idle_images[i], (60,120))
         for i in range(len(self.player_walk_images)):
@@ -25,7 +26,7 @@ class animation:
         if self.state == 1:
             current_image = self.player_walk_images[self.player_walk_index]
             if self.left_direction:
-                current_image = pygame.transform.flip(current_image, True, False)
+                current_image = pygame.transform.flip(current_image, True, False) #Retourne l'image si le joueur va à gauche
         return current_image
 
     def update(self):
