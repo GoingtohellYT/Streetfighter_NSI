@@ -17,19 +17,19 @@ background = pygame.image.load('assets/bg.png')
 background = pygame.transform.scale(background, (1080, 720))
 
 # on charge l'image du bouton quitter et on modifie sa taille
-quit_btn = pygame.image.load('assets/quit.png')
+quit_btn = pygame.image.load('assets/quit_button.png')
 quit_btn = pygame.transform.scale(quit_btn, (300, 100))
 # on définit l'emplacement du bouton et sa hitbox
 quit_btn_rect = quit_btn.get_rect()
-quit_btn_rect.x = math.ceil(screen.get_width() / 2.9)
-quit_btn_rect.y = math.ceil(screen.get_height() / 1.4)
+quit_btn_rect.x = math.ceil((screen.get_width()-300) / 2)
+quit_btn_rect.y = math.ceil((screen.get_height()-100) / 2+105)
 
-# idem que pour le bouton quitter
-play_btn = pygame.image.load("assets/button.png")
-play_btn = pygame.transform.scale(play_btn, (400, 150))
+# idem que pour le bouton jouer
+play_btn = pygame.image.load("assets/play_button.png")
+play_btn = pygame.transform.scale(play_btn, (300, 100))
 play_btn_rect = play_btn.get_rect()
-play_btn_rect.x = math.ceil(screen.get_width() / 3.33)
-play_btn_rect.y = math.ceil(screen.get_height() / 2)
+play_btn_rect.x = math.ceil((screen.get_width()-300) / 2)
+play_btn_rect.y = math.ceil((screen.get_height()-100) / 2)
 
 
 game = Game()  # On charge la classe du jeu
