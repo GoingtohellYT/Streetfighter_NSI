@@ -38,8 +38,8 @@ class animation:
             elif self.state==1:
                 self.player_walk_index = self.update_index(self.player_walk_index, 6)
 
-    def update_index(self, index, max):
+    def update_index(self, index, indexMax):
         index = index+1
-        if index>=max:
+        if index>=indexMax:
             index=0
         return index

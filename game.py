@@ -22,7 +22,7 @@ class Game:
 
     def update(self, screen):
         # afficher le joueur
-        screen.blit(self.player.image, self.player.rect)
+        screen.blit(self.player.animation.get_current_image(), self.player.rect)
         self.player.update()
 
         # vérifier si le joueur souhaite et peut se déplacer
@@ -34,3 +34,6 @@ class Game:
             self.player.animation.left_direction = True
         else:
             self.player.animation.state = 0
+        
+        if self.pressed.get(pygame.K_UP):
+            self.player.jump = 20

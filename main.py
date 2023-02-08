@@ -31,7 +31,6 @@ play_btn_rect = play_btn.get_rect()
 play_btn_rect.x = math.ceil((screen.get_width()-300) / 2)
 play_btn_rect.y = math.ceil((screen.get_height()-100) / 2)
 
-
 game = Game()  # On charge la classe du jeu
 
 running = True
