@@ -2,14 +2,14 @@ from Spritesheet import SpriteSheet
 import pygame
 
 class animation:
-    def __init__(self):
+    def __init__(self, nb):
         self.state=0 #Etat du joueur (0: Ne bouge pas, 1: est entrain de marcher)
         self.left_direction=False #Va à gauche ou à droite
         self.frame_rate = 4 #L'animation du joueur change toutes les 4 frames
         self.current_frame = 0
-        spritesheet = SpriteSheet('assets/player1_idle.png')
+        spritesheet = SpriteSheet('assets/player'+str(nb)+'_idle.png')
         self.player_idle_images = spritesheet.images(1,6) #Découpe les images du joueur
-        spritesheet = SpriteSheet('assets/player1_walk.png')
+        spritesheet = SpriteSheet('assets/player'+str(nb)+'_walk.png')
         self.player_walk_images = spritesheet.images(1,6) #Découpe les images du joueur
 
         #Redimensionner chaque image individuellement
