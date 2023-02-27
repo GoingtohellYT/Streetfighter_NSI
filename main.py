@@ -66,6 +66,10 @@ while running:
         elif event.type == pygame.KEYDOWN:
             game.pressed[event.key] = True  # on ajoute la touche pressée au dict
 
+            # Si la touche pressée correspond à l'attaque
+            if event.key == pygame.K_SPACE or event.key == pygame.K_INSERT:
+                game.attack(event.key)
+
         elif event.type == pygame.KEYUP:
             game.pressed[event.key] = False  # on retire la touche pressée du dict
 

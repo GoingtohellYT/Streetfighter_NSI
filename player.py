@@ -21,12 +21,21 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = 500
         # On définit les paramètres qui varient entre le joueur 1 et le joueur 2
         if nb == 1:
-            self.rect.x = 450
+            self.rect.x = 260
             self.opposite_gr = self.game.player_two_gr
         elif nb == 2:
-            self.rect.x = 650
+            self.rect.x = 800
             self.opposite_gr = self.game.player_one_gr
         self.nb = nb  # On se permet d'utiliser notre numéro de joueur dans les autres fonctions de la classe
+
+    def damage(self, amount):
+        # si les deux joueurs sont en collision
+        if self.game.check_collision(self, self.opposite_gr):  # si le joueur peut encaisser le coup
+            if self.health - amount > 0:
+                self.health -= amount
+            elif self.health - amount <= 0:  # si le coup est fatal pour le joueur
+                self.health = 0
+                self.game.game_over()
     
     def update(self):
         if self.jump > 0:
@@ -47,6 +56,23 @@ class Player(pygame.sprite.Sprite):
                     self.rect.x += self.runVelocity
 
         self.animation.update()
+
+    def update_health_bar(self, surface):
+        # dessiner la barre de vie du joueur et son arrière-plan
+        if self.nb == 1:
+            pygame.draw.rect(surface, (60, 63, 60), [20, 20, self.max_health * 5, 25])
+            pygame.draw.rect(surface, (111, 210, 46), [20, 20, self.health * 5, 25])
+        elif self.nb == 2:
+            pygame.draw.rect(surface, (60, 63, 60), [560, 20, self.max_health * 5, 25])
+            pygame.draw.rect(surface, (111, 210, 46), [560, 20, self.health * 5, 25])
+
+    def reset(self):
+        self.health = self.max_health
+        if self.nb == 1:
+            self.rect.x = 260
+        elif self.nb == 2:
+            self.rect.x = 800
+        self.rect.y = 500
 
 
 
