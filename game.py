@@ -66,52 +66,54 @@ class Game:
         self.player_one.update_health_bar(screen)
         self.player_two.update_health_bar(screen)
 
-        # vérifier si le joueur 1 souhaite et peut se déplacer dans les limites de l'écran
-        if self.pressed.get(
-                pygame.K_d) and self.player_one.rect.width + self.player_one.rect.x < screen.get_width():
-            self.player_one.animation.state = 1
-            self.player_one.animation.left_direction = False
-        elif self.pressed.get(pygame.K_q) and self.player_one.rect.x > 0:
-            self.player_one.animation.state = 1
-            self.player_one.animation.left_direction = True
-        else:
-            self.player_one.animation.state = 0
+        if self.player_one.animation.state != 2:
+            # vérifier si le joueur 1 souhaite et peut se déplacer dans les limites de l'écran
+            if self.pressed.get(
+                    pygame.K_d) and self.player_one.rect.width + self.player_one.rect.x < screen.get_width():
+                self.player_one.animation.state = 1
+                self.player_one.animation.left_direction = False
+            elif self.pressed.get(pygame.K_q) and self.player_one.rect.x > 0:
+                self.player_one.animation.state = 1
+                self.player_one.animation.left_direction = True
+            else:
+                self.player_one.animation.state = 0
 
-        # vérifie si le joueur peut sauter (s'il touche le sol)
-        if self.pressed.get(pygame.K_z) and self.player_one.rect.y == 500:
-            self.player_one.jump = 20
+            if self.pressed.get(pygame.K_s):
+                self.player_one.increased_fall()
+
+            # vérifie si le joueur peut sauter (s'il touche le sol)
+            if self.pressed.get(pygame.K_z) and self.player_one.rect.y == 500:
+                self.player_one.jump = 20
 
         # idem pour le joueur 2
-        if self.pressed.get(
-                pygame.K_RIGHT) and self.player_two.rect.width + self.player_two.rect.x < screen.get_width():
-            self.player_two.animation.state = 1
-            self.player_two.animation.left_direction = False
-        elif self.pressed.get(pygame.K_LEFT) and self.player_two.rect.x > 0:
-            self.player_two.animation.state = 1
-            self.player_two.animation.left_direction = True
-        else:
-            self.player_two.animation.state = 0
+        if self.player_two.animation.state != 2:
+            if self.pressed.get(
+                    pygame.K_RIGHT) and self.player_two.rect.width + self.player_two.rect.x < screen.get_width():
+                self.player_two.animation.state = 1
+                self.player_two.animation.left_direction = False
+            elif self.pressed.get(pygame.K_LEFT) and self.player_two.rect.x > 0:
+                self.player_two.animation.state = 1
+                self.player_two.animation.left_direction = True
+            else:
+                self.player_two.animation.state = 0
 
-        if self.pressed.get(pygame.K_UP) and self.player_two.rect.y == 500:
-            self.player_two.jump = 20
+            if self.pressed.get(pygame.K_DOWN):
+                self.player_two.increased_fall()
 
-        # si le joueur souhaite accélérer sa chute
-        if self.pressed.get(pygame.K_s):
-            self.player_one.increased_fall()
-
-        if self.pressed.get(pygame.K_DOWN):
-            self.player_two.increased_fall()
+            if self.pressed.get(pygame.K_UP) and self.player_two.rect.y == 500:
+                self.player_two.jump = 20
 
     def attack(self, key):
         if key == pygame.K_SPACE:
             self.player_two.damage(self.player_one.attack)
+            self.player_one.animation.state=2 # Etat du joueur lorsqu'il frappe
         elif key == pygame.K_INSERT:
             self.player_one.damage(self.player_two.attack)
+            self.player_two.animation.state = 2 # Etat du joueur lorsqu'il frappe
 
     def fall_attack(self, key):
         if key == pygame.K_s:
-            self.player_two.damage(0.2*self.player_one.attack)
+            self.player_two.damage(0.2 * self.player_one.attack)
         elif key == pygame.K_DOWN:
-            self.player_one.damage(0.2*self.player_two.attack)
-
+            self.player_one.damage(0.2 * self.player_two.attack)
 
