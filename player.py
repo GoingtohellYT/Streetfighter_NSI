@@ -37,14 +37,17 @@ class Player(pygame.sprite.Sprite):
                 self.health = 0
                 self.game.game_over()
     
-    def update(self):
+    def update(self, factor):
         if self.jump > 0:
             self.rect.y = self.rect.y-self.jump
             self.jump = self.jump-1
             self.yVelocity = 0
         elif self.rect.y < 500:
-            self.rect.y = self.rect.y+self.yVelocity  # Faire tomber le joueur
+            self.rect.y = self.rect.y+(self.yVelocity * factor)  # Faire tomber le joueur
             self.yVelocity += 1
+
+        if self.rect.y > 500:
+            self.rect.y = 500
 
         # Si le joueur souhaite se déplacer...
         if self.animation.state == 1:
@@ -57,14 +60,27 @@ class Player(pygame.sprite.Sprite):
 
         self.animation.update()
 
+    def increased_fall(self):
+        if self.rect.y < 350:
+            self.update(2)
+        if self.game.check_collision(self, self.opposite_gr) and self.rect.y < 500:
+            if self.nb == 1:
+                self.game.fall_attack(pygame.K_s)
+            elif self.nb == 2:
+                self.game.fall_attack(pygame.K_DOWN)
+
     def update_health_bar(self, surface):
         # dessiner la barre de vie du joueur et son arrière-plan
+        green = pygame.Color(111, 210, 46)
+        red = pygame.Color(217, 0, 0)
+        mixture = red.lerp(green, self.health / self.max_health)
+
         if self.nb == 1:
             pygame.draw.rect(surface, (60, 63, 60), [20, 20, self.max_health * 5, 25])
-            pygame.draw.rect(surface, (111, 210, 46), [20, 20, self.health * 5, 25])
+            pygame.draw.rect(surface, mixture, [20, 20, self.health * 5, 25])
         elif self.nb == 2:
             pygame.draw.rect(surface, (60, 63, 60), [560, 20, self.max_health * 5, 25])
-            pygame.draw.rect(surface, (111, 210, 46), [560, 20, self.health * 5, 25])
+            pygame.draw.rect(surface, mixture, [560, 20, self.health * 5, 25])
 
     def reset(self):
         self.health = self.max_health

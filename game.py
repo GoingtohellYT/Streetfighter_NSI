@@ -58,9 +58,9 @@ class Game:
     def update(self, screen):
         # afficher les joueurs
         screen.blit(self.player_one.animation.get_current_image(), self.player_one.rect)
-        self.player_one.update()
+        self.player_one.update(1)
         screen.blit(self.player_two.animation.get_current_image(), self.player_two.rect)
-        self.player_two.update()
+        self.player_two.update(1)
 
         # afficher les barres de vie des joueurs et les actualiser.
         self.player_one.update_health_bar(screen)
@@ -95,9 +95,23 @@ class Game:
         if self.pressed.get(pygame.K_UP) and self.player_two.rect.y == 500:
             self.player_two.jump = 20
 
+        # si le joueur souhaite accélérer sa chute
+        if self.pressed.get(pygame.K_s):
+            self.player_one.increased_fall()
+
+        if self.pressed.get(pygame.K_DOWN):
+            self.player_two.increased_fall()
+
     def attack(self, key):
         if key == pygame.K_SPACE:
             self.player_two.damage(self.player_one.attack)
         elif key == pygame.K_INSERT:
             self.player_one.damage(self.player_two.attack)
+
+    def fall_attack(self, key):
+        if key == pygame.K_s:
+            self.player_two.damage(0.2*self.player_one.attack)
+        elif key == pygame.K_DOWN:
+            self.player_one.damage(0.2*self.player_two.attack)
+
 
