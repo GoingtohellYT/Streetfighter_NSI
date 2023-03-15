@@ -1,5 +1,8 @@
 import pygame
 from player import Player
+from audio import SoundManager
+from random import randint
+import time
 
 
 # classe qui représente le jeu
@@ -14,14 +17,21 @@ class Game:
         self.player_one_gr.add(self.player_one)  # on ajoute notre joueur au groupe de sprites
         self.player_two_gr.add(self.player_two)
         self.pressed = {}
+        self.sound_manager = SoundManager()
 
     def start(self):
         self.is_playing = True
+        self.sound_manager.play("fight")
         print("Lancement du jeu")
 
     def game_over(self):
         self.is_playing = False  # affiche l'écran d'accueil
-        # Remet les barres de vie des joueurs à 0.
+        # Annonce le vainqueur
+        if self.player_one.health == 0:
+            self.sound_manager.play("p2_victory")
+        elif self.player_two.health == 0:
+            self.sound_manager.play("p1_victory")
+        # Remet les barres de vie des joueurs au maximum et remet les joueurs à leur position initiale.
         self.player_one.reset()
         self.player_two.reset()
         print("Arrêt du jeu")
@@ -55,6 +65,17 @@ class Game:
                 else:
                     return False
 
+    # Nouvelle fonction pour vérifier où est l'autre joueur et en déduire l'orientation du joueur lors de l'attaque
+    def change_directions(self):
+        if self.player_one.rect.x < self.player_two.rect.x:
+            self.player_one.animation.left_direction = False
+            self.player_two.animation.left_direction = True
+            return "1-2"
+        elif self.player_one.rect.x > self.player_two.rect.x:
+            self.player_one.animation.left_direction = True
+            self.player_two.animation.left_direction = False
+            return "2-1"
+
     def update(self, screen):
         # afficher les joueurs
         screen.blit(self.player_one.animation.get_current_image(), self.player_one.rect)
@@ -82,7 +103,7 @@ class Game:
                 self.player_one.increased_fall()
 
             # vérifie si le joueur peut sauter (s'il touche le sol)
-            if self.pressed.get(pygame.K_z) and self.player_one.rect.y == 500:
+            if self.pressed.get(pygame.K_z) and self.player_one.rect.y == self.player_one.default_y:
                 self.player_one.jump = 20
 
         # idem pour le joueur 2
@@ -100,16 +121,32 @@ class Game:
             if self.pressed.get(pygame.K_DOWN):
                 self.player_two.increased_fall()
 
-            if self.pressed.get(pygame.K_UP) and self.player_two.rect.y == 500:
+            if self.pressed.get(pygame.K_UP) and self.player_two.rect.y == self.player_two.default_y:
                 self.player_two.jump = 20
 
     def attack(self, key):
+        self.change_directions()
         if key == pygame.K_SPACE:
+            # On choisit aléatoirement un des deux sons d'attaque
+            attack_sound = randint(1, 2)
+            if attack_sound == 1:
+                self.sound_manager.play("attack1")
+            elif attack_sound == 2:
+                self.sound_manager.play("attack2")
+            # On déclenche l'attaque
             self.player_two.damage(self.player_one.attack)
-            self.player_one.animation.state=2 # Etat du joueur lorsqu'il frappe
+            self.player_one.animation.state = 2  # Etat du joueur lorsqu'il frappe
         elif key == pygame.K_INSERT:
+            # idem que pour joueur 1
+            attack_sound = randint(1, 2)
+            if attack_sound == 1:
+                self.sound_manager.play("attack1")
+            elif attack_sound == 2:
+                self.sound_manager.play("attack2")
+            # On déclenche l'attaque
             self.player_one.damage(self.player_two.attack)
-            self.player_two.animation.state = 2 # Etat du joueur lorsqu'il frappe
+            self.player_two.animation.state = 2  # Etat du joueur lorsqu'il frappe
+
 
     def fall_attack(self, key):
         if key == pygame.K_s:

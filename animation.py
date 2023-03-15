@@ -2,22 +2,22 @@ from Spritesheet import SpriteSheet
 import pygame
 
 
-class animation:
+class Animation:
     def __init__(self, nb):
-        self.state = 0  # Etat du joueur (0: Ne bouge pas, 1: est en train de marcher, 2: Tappe le joueur)
+        self.state = 0  # Etat du joueur (0: Ne bouge pas, 1: est en train de marcher, 2: Tape le joueur)
         self.left_direction = False  # Va à gauche ou à droite
         self.frame_rate = 4  # L'animation du joueur change toutes les 4 frames
         self.current_frame = 0
-        spritesheet = SpriteSheet('assets/player'+str(nb)+'_idle.png') # Joueur immobile
+        spritesheet = SpriteSheet('assets/player'+str(nb)+'_idle.png')  # Joueur immobile
         self.player_idle_images = spritesheet.images(1, 6)  # Découpe les images du joueur
-        spritesheet = SpriteSheet('assets/player' + str(nb) + '_walk.png') # Joueur qui marche
+        spritesheet = SpriteSheet('assets/player' + str(nb) + '_walk.png')  # Joueur qui marche
         self.player_walk_images = spritesheet.images(1, 6)  # Découpe les images du joueur
         spritesheet = SpriteSheet('assets/player' + str(nb) + '_hit.png')  # Joueur qui tappe
         self.player_hit_images = spritesheet.images(1, 9)  # Découpe les images du joueur
 
         # Redimensionner chaque image individuellement
         for i in range(len(self.player_idle_images)):
-            self.player_idle_images[i] = pygame.transform.scale(self.player_idle_images[i], (60,120))
+            self.player_idle_images[i] = pygame.transform.scale(self.player_idle_images[i], (60, 120))
         for i in range(len(self.player_walk_images)):
             self.player_walk_images[i] = pygame.transform.scale(self.player_walk_images[i], (60, 120))
         for i in range(len(self.player_hit_images)):
