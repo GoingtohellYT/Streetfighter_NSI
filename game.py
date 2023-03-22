@@ -19,6 +19,7 @@ class Game:
         self.player_two_gr.add(self.player_two)
         self.pressed = {}
         self.sound_manager = SoundManager()
+        self.bullet_image = pygame.image.load("assets/bullet.png").convert_alpha() # Charge l'image du projectile. On y accède dans la classe projetcile.
         self.timer = 180  # nombre de secondes maximal
         self.loop = 0  # nombre de boucles
 
