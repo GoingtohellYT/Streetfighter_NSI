@@ -18,6 +18,8 @@ class Game:
         self.player_two_gr.add(self.player_two)
         self.pressed = {}
         self.sound_manager = SoundManager()
+        self.timer = 180  # nombre de secondes maximal
+        self.loop = 0  # nombre de boucles
 
     def start(self):
         self.is_playing = True
@@ -27,9 +29,9 @@ class Game:
     def game_over(self):
         self.is_playing = False  # affiche l'écran d'accueil
         # Annonce le vainqueur
-        if self.player_one.health == 0:
+        if self.player_one.health < self.player_two.health:
             self.sound_manager.play("p2_victory")
-        elif self.player_two.health == 0:
+        elif self.player_two.health < self.player_one.health:
             self.sound_manager.play("p1_victory")
         # Remet les barres de vie des joueurs au maximum et remet les joueurs à leur position initiale.
         self.player_one.reset()
@@ -77,6 +79,19 @@ class Game:
             return "2-1"
 
     def update(self, screen):
+        # On ajoute 1 au nombre de tours de boucle
+        self.loop += 1
+        # On vérifie si une seconde est passée
+        if self.loop % 30 == 0:
+            self.timer -= 1
+            if self.timer == 0:
+                self.game_over()
+
+        # On affiche le timer à l'écran
+        font = pygame.font.SysFont("Bauhaus 93", 35)
+        timer_text = font.render(str(self.timer) + "s", 1, (255, 0, 0))
+        screen.blit(timer_text, (500, 10))
+
         # afficher les joueurs
         screen.blit(self.player_one.animation.get_current_image(), self.player_one.rect)
         self.player_one.update(1)

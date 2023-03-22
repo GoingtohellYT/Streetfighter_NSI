@@ -38,14 +38,14 @@ class Player(pygame.sprite.Sprite):
                 self.health -= amount
                 # On fait reculer le joueur qui quand il reçoit des dégâts → évite le spamming
                 if self.game.change_directions() == "1-2" and amount == self.attack:
-                    if self.nb == 1:
+                    if self.nb == 1 and self.rect.x >= 50:
                         self.rect.x -= 50
-                    elif self.nb == 2:
+                    elif self.nb == 2 and self.rect.x <= 980:
                         self.rect.x += 50
                 elif self.game.change_directions() == "2-1" and amount == self.attack:
-                    if self.nb == 1:
+                    if self.nb == 1 and self.rect.x <= 980:
                         self.rect.x += 50
-                    elif self.nb == 2:
+                    elif self.nb == 2 and self.rect.x >= 50:
                         self.rect.x -= 50
             elif self.health - amount <= 0:  # si le coup est fatal pour le joueur
                 self.health = 0
@@ -88,11 +88,11 @@ class Player(pygame.sprite.Sprite):
         red = pygame.Color(217, 0, 0)
         mixture = red.lerp(green, self.health / self.max_health)  # Mélange de couleurs pour la barre de vie
         if self.nb == 1:
-            pygame.draw.rect(surface, (60, 63, 60), [20, 20, self.max_health * 5, 15])
-            pygame.draw.rect(surface, mixture, [20, 20, self.health * 5, 15])
+            pygame.draw.rect(surface, (60, 63, 60), [20, 20, self.max_health * 4.2, 15])
+            pygame.draw.rect(surface, mixture, [20, 20, self.health * 4.2, 15])
         elif self.nb == 2:
-            pygame.draw.rect(surface, (60, 63, 60), [560, 20, self.max_health * 5, 15])
-            pygame.draw.rect(surface, mixture, [560, 20, self.health * 5, 15])
+            pygame.draw.rect(surface, (60, 63, 60), [640, 20, self.max_health * 4.2, 15])
+            pygame.draw.rect(surface, mixture, [640, 20, self.health * 4.2, 15])
 
     def reset(self):
         self.health = self.max_health
