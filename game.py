@@ -12,6 +12,7 @@ class Game:
         self.is_playing = False
         self.player_one_gr = pygame.sprite.Group()  # groupe de sprites qui contient les joueurs
         self.player_two_gr = pygame.sprite.Group()
+        self.projectiles = pygame.sprite.Group()
         self.player_one = Player(self, 1)  # crée une instance de la classe joueur pour notre joueur
         self.player_two = Player(self, 2)  # crée une seconde instance de la classe joueur
         self.player_one_gr.add(self.player_one)  # on ajoute notre joueur au groupe de sprites
@@ -101,6 +102,11 @@ class Game:
         # afficher les barres de vie des joueurs et les actualiser.
         self.player_one.update_health_bar(screen)
         self.player_two.update_health_bar(screen)
+        
+        # Faire bouger tous les projectiles
+        for projectile in self.projectiles:
+            projectile.move()
+            screen.blit(self.bullet_image, projectile.rect) # Dessiner les projectiles à l'écran
 
         if self.player_one.animation.state != 2:
             # vérifier si le joueur 1 souhaite et peut se déplacer dans les limites de l'écran
@@ -116,6 +122,9 @@ class Game:
 
             if self.pressed.get(pygame.K_s):
                 self.player_one.increased_fall()
+                
+            if self.pressed.get(pygame.K_e):
+                self.player_one.shoot_projectile()
 
             # vérifie si le joueur peut sauter (s'il touche le sol)
             if self.pressed.get(pygame.K_z) and self.player_one.rect.y == self.player_one.default_y:
