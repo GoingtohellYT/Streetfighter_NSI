@@ -38,6 +38,8 @@ class Game:
         # Remet les barres de vie des joueurs au maximum et remet les joueurs à leur position initiale.
         self.player_one.reset()
         self.player_two.reset()
+        self.timer = 180
+        self.loop = 0
         print("Arrêt du jeu")
 
     # On vérifie si les deux joueurs se touchent
