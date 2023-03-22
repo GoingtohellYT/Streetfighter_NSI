@@ -1,5 +1,6 @@
 import pygame
 from animation import Animation
+from projectile import Projectile
 
 
 class Player(pygame.sprite.Sprite):
@@ -30,6 +31,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.x = 800
             self.opposite_gr = self.game.player_one_gr
         self.nb = nb  # On se permet d'utiliser notre numéro de joueur dans les autres fonctions de la classe
+        self.projectile_timer = 0 # Timer avant de pouvoir réutiliser un projectile
 
     def damage(self, amount):
         # si les deux joueurs sont en collision
@@ -52,6 +54,10 @@ class Player(pygame.sprite.Sprite):
                 self.game.game_over()
     
     def update(self, fallFactor):
+        
+        if self.projectile_timer>0:
+            self.projectile_timer=self.projectile_timer-1
+    
         if self.jump > 0:
             self.rect.y = self.rect.y - self.jump
             self.jump -= 1
@@ -73,6 +79,11 @@ class Player(pygame.sprite.Sprite):
 
         self.animation.update()
 
+    def shoot_projectile(self):
+        if self.projectile_timer == 0:
+            self.game.projectiles.add(Projectile(self.game, self)) # Ajoute un projectile
+            self.projectile_timer = 30
+    
     def increased_fall(self):
         if self.rect.y < 350:
             self.update(2)
