@@ -18,10 +18,25 @@ class Game:
         self.player_one_gr.add(self.player_one)  # on ajoute notre joueur au groupe de sprites
         self.player_two_gr.add(self.player_two)
         self.pressed = {}
+        self.controllers = list()
         self.sound_manager = SoundManager()
-        self.bullet_image = pygame.image.load("assets/bullet.png").convert_alpha() # Charge l'image du projectile. On y accède dans la classe projetcile.
+        self.bullet_image = pygame.image.load(
+            "assets/bullet.png").convert_alpha()  # Charge l'image du projectile. On y accède dans la classe projectile.
         self.timer = 180  # nombre de secondes maximal
         self.loop = 0  # nombre de boucles
+        # On initialise les deux manettes si possible
+        pygame.joystick.init()
+        try:
+            self.joystick1 = pygame.joystick.Joystick(0)
+            self.joystick2 = pygame.joystick.Joystick(1)
+        except pygame.error:
+            pass
+        self.controller_count = pygame.joystick.get_count()
+        if self.controller_count == 1 or self.controller_count > 2:
+            self.controller_count = 0
+            print("Veuillez jouer au clavier")
+
+        # print(self.controller_count)
 
     def start(self):
         self.is_playing = True
@@ -105,55 +120,100 @@ class Game:
         # afficher les barres de vie des joueurs et les actualiser.
         self.player_one.update_health_bar(screen)
         self.player_two.update_health_bar(screen)
-        
+
         # Faire bouger tous les projectiles
         for projectile in self.projectiles:
             projectile.move()
-            screen.blit(self.bullet_image, projectile.rect) # Dessiner les projectiles à l'écran
+            screen.blit(self.bullet_image, projectile.rect)  # Dessiner les projectiles à l'écran
 
         if self.player_one.animation.state != 2:
-            # vérifier si le joueur 1 souhaite et peut se déplacer dans les limites de l'écran
-            if self.pressed.get(
-                    pygame.K_d) and self.player_one.rect.width + self.player_one.rect.x < screen.get_width():
-                self.player_one.animation.state = 1
-                self.player_one.animation.left_direction = False
-            elif self.pressed.get(pygame.K_q) and self.player_one.rect.x > 0:
-                self.player_one.animation.state = 1
-                self.player_one.animation.left_direction = True
-            else:
-                self.player_one.animation.state = 0
+            if self.controller_count == 2:
+                if self.joystick1.get_button(14) and self.player_one.rect.width + self.player_one.rect.x < screen.get_width():
+                    self.player_one.animation.state = 1
+                    self.player_one.animation.left_direction = False
+                elif self.joystick1.get_button(13) and self.player_one.rect.x > 0:
+                    self.player_one.animation.state = 1
+                    self.player_one.animation.left_direction = True
+                else:
+                    self.player_one.animation.state = 0
 
-            if self.pressed.get(pygame.K_s):
-                self.player_one.increased_fall()
-                
-            if self.pressed.get(pygame.K_e):
-                self.player_one.shoot_projectile()
+                if self.joystick1.get_button(12):
+                    self.player_one.increased_fall()
 
-            # vérifie si le joueur peut sauter (s'il touche le sol)
-            if self.pressed.get(pygame.K_z) and self.player_one.rect.y == self.player_one.default_y:
-                self.player_one.jump = 20
+                if self.joystick1.get_button(3):
+                    self.player_one.shoot_projectile()
+
+                # vérifie si le joueur peut sauter (s'il touche le sol)
+                if (self.joystick1.get_button(11) or self.joystick1.get_button(0)) and self.player_one.rect.y == self.player_one.default_y:
+                    self.player_one.jump = 20
+
+            elif self.controller_count == 0:
+                # vérifier si le joueur 1 souhaite et peut se déplacer dans les limites de l'écran
+                if self.pressed.get(
+                        pygame.K_d) and self.player_one.rect.width + self.player_one.rect.x < screen.get_width():
+                    self.player_one.animation.state = 1
+                    self.player_one.animation.left_direction = False
+                elif self.pressed.get(pygame.K_q) and self.player_one.rect.x > 0:
+                    self.player_one.animation.state = 1
+                    self.player_one.animation.left_direction = True
+                else:
+                    self.player_one.animation.state = 0
+
+                if self.pressed.get(pygame.K_s):
+                    self.player_one.increased_fall()
+
+                if self.pressed.get(pygame.K_e):
+                    self.player_one.shoot_projectile()
+
+                # vérifie si le joueur peut sauter (s'il touche le sol)
+                if self.pressed.get(pygame.K_z) and self.player_one.rect.y == self.player_one.default_y:
+                    self.player_one.jump = 20
 
         # idem pour le joueur 2
         if self.player_two.animation.state != 2:
-            if self.pressed.get(
-                    pygame.K_RIGHT) and self.player_two.rect.width + self.player_two.rect.x < screen.get_width():
-                self.player_two.animation.state = 1
-                self.player_two.animation.left_direction = False
-            elif self.pressed.get(pygame.K_LEFT) and self.player_two.rect.x > 0:
-                self.player_two.animation.state = 1
-                self.player_two.animation.left_direction = True
-            else:
-                self.player_two.animation.state = 0
+            if self.controller_count == 0:
+                if self.pressed.get(
+                        pygame.K_ASTERISK) and self.player_two.rect.width + self.player_two.rect.x < screen.get_width():
+                    self.player_two.animation.state = 1
+                    self.player_two.animation.left_direction = False
+                elif self.pressed.get(pygame.K_m) and self.player_two.rect.x > 0:
+                    self.player_two.animation.state = 1
+                    self.player_two.animation.left_direction = True
+                else:
+                    self.player_two.animation.state = 0
 
-            if self.pressed.get(pygame.K_DOWN):
-                self.player_two.increased_fall()
+                if self.pressed.get(249):
+                    self.player_two.increased_fall()
 
-            if self.pressed.get(pygame.K_UP) and self.player_two.rect.y == self.player_two.default_y:
-                self.player_two.jump = 20
+                if self.pressed.get(pygame.K_p):
+                    self.player_two.shoot_projectile()
 
-    def attack(self, key):
+                if self.pressed.get(pygame.K_CARET) and self.player_two.rect.y == self.player_two.default_y:
+                    self.player_two.jump = 20
+
+            elif self.controller_count == 2:
+                if self.joystick2.get_button(
+                        14) and self.player_two.rect.width + self.player_two.rect.x < screen.get_width():
+                    self.player_two.animation.state = 1
+                    self.player_two.animation.left_direction = False
+                elif self.joystick2.get_button(13) and self.player_two.rect.x > 0:
+                    self.player_two.animation.state = 1
+                    self.player_two.animation.left_direction = True
+                else:
+                    self.player_two.animation.state = 0
+
+                if self.joystick2.get_button(12):
+                    self.player_two.increased_fall()
+
+                if self.joystick2.get_button(3):
+                    self.player_two.shoot_projectile()
+
+                if (self.joystick2.get_button(11) or self.joystick2.get_button(0)) and self.player_two.rect.y == self.player_two.default_y:
+                    self.player_two.jump = 20
+
+    def attack(self, key, controller):
         self.change_directions()
-        if key == pygame.K_SPACE:
+        if key == pygame.K_SPACE or controller == "controller1":
             # On choisit aléatoirement un des deux sons d'attaque
             attack_sound = randint(1, 2)
             if attack_sound == 1:
@@ -163,7 +223,7 @@ class Game:
             # On déclenche l'attaque
             self.player_two.damage(self.player_one.attack)
             self.player_one.animation.state = 2  # Etat du joueur lorsqu'il frappe
-        elif key == pygame.K_INSERT:
+        elif key == pygame.K_INSERT or controller == 'controller2':
             # idem que pour joueur 1
             attack_sound = randint(1, 2)
             if attack_sound == 1:
@@ -174,10 +234,8 @@ class Game:
             self.player_one.damage(self.player_two.attack)
             self.player_two.animation.state = 2  # Etat du joueur lorsqu'il frappe
 
-
     def fall_attack(self, key):
         if key == pygame.K_s:
             self.player_two.damage(0.2 * self.player_one.attack)
         elif key == pygame.K_DOWN:
             self.player_one.damage(0.2 * self.player_two.attack)
-

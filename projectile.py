@@ -1,5 +1,6 @@
 import pygame
 
+
 class Projectile(pygame.sprite.Sprite):
     def __init__(self, game, player):
         pygame.sprite.Sprite.__init__(self)
@@ -14,12 +15,12 @@ class Projectile(pygame.sprite.Sprite):
         self.vy = 0
         self.owner = player.nb
 
-    def remove(self):
+    def remove(self, ):
         self.game.projectiles.remove(self)
 
-    def move(self):
-        self.rect.x=self.rect.x+self.vx
-        self.rect.y=self.rect.y+self.vy
+    def move(self, ):
+        self.rect.x = self.rect.x+self.vx
+        self.rect.y = self.rect.y+self.vy
 
-        if self.rect.x<0 or self.rect.x>1080:
+        if self.rect.x < 0 or self.rect.x > 1080:
             self.remove()

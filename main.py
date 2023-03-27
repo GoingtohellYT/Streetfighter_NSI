@@ -68,9 +68,22 @@ while running:
 
             # Si la touche pressée correspond à l'attaque
             if event.key == pygame.K_SPACE or event.key == pygame.K_INSERT:
-                game.attack(event.key)
+                game.attack(event.key, None)
 
         elif event.type == pygame.KEYUP:
             game.pressed[event.key] = False  # on retire la touche pressée du dict
+
+        elif event.type == pygame.JOYBUTTONDOWN and game.controller_count != 0:
+            game.pressed[event.button] = True
+
+            # Si le bouton pressé correspond à l'attaque
+            if event.button == pygame.CONTROLLER_BUTTON_X:
+                if game.joystick1.get_button(2):
+                    game.attack(None, "controller1")
+                if game.joystick2.get_button(2):
+                    game.attack(None, 'controller2')
+
+        elif event.type == pygame.JOYBUTTONUP:
+            game.pressed[event.button] = False
 
     clock.tick(FPS)
