@@ -19,5 +19,5 @@ Fighting game project for 1ère NSI
   
 27/03/2023 update :
 
-  -> adds full controller support for controllers (PS4 only)!
+  -> adds full controller support!
 
