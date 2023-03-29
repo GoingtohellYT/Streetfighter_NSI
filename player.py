@@ -35,23 +35,22 @@ class Player(pygame.sprite.Sprite):
 
     def damage(self, amount):
         # si les deux joueurs sont en collision
-        if self.game.check_collision(self, self.opposite_gr):  # si le joueur peut encaisser le coup
-            if self.health - amount > 0:
-                self.health -= amount
-                # On fait reculer le joueur qui quand il reçoit des dégâts → évite le spamming
-                if self.game.change_directions() == "1-2" and amount == self.attack:
-                    if self.nb == 1 and self.rect.x >= 50:
-                        self.rect.x -= 50
-                    elif self.nb == 2 and self.rect.x <= 980:
-                        self.rect.x += 50
-                elif self.game.change_directions() == "2-1" and amount == self.attack:
-                    if self.nb == 1 and self.rect.x <= 980:
-                        self.rect.x += 50
-                    elif self.nb == 2 and self.rect.x >= 50:
-                        self.rect.x -= 50
-            elif self.health - amount <= 0:  # si le coup est fatal pour le joueur
-                self.health = 0
-                self.game.game_over()
+        if self.health - amount > 0:
+            self.health -= amount
+            # On fait reculer le joueur qui quand il reçoit des dégâts → évite le spamming
+            if self.game.change_directions() == "1-2" and amount == self.attack:
+                if self.nb == 1 and self.rect.x >= 50:
+                    self.rect.x -= 50
+                elif self.nb == 2 and self.rect.x <= 980:
+                    self.rect.x += 50
+            elif self.game.change_directions() == "2-1" and amount == self.attack:
+                if self.nb == 1 and self.rect.x <= 980:
+                    self.rect.x += 50
+                elif self.nb == 2 and self.rect.x >= 50:
+                    self.rect.x -= 50
+        elif self.health - amount <= 0:  # si le coup est fatal pour le joueur
+            self.health = 0
+            self.game.game_over()
 
         # si le joueur est en collision avec un projectile
         """""""""
@@ -98,7 +97,7 @@ class Player(pygame.sprite.Sprite):
             if self.nb == 1:
                 self.game.fall_attack(pygame.K_s)
             elif self.nb == 2:
-                self.game.fall_attack(pygame.K_DOWN)
+                self.game.fall_attack(249)
 
     def update_health_bar(self, surface):
         # dessiner la barre de vie du joueur et son arrière-plan

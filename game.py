@@ -2,7 +2,7 @@ import pygame
 from player import Player
 from audio import SoundManager
 from random import randint
-import time
+from optionmenu import Optionmenu
 
 
 # classe qui représente le jeu
@@ -20,10 +20,11 @@ class Game:
         self.pressed = {}
         self.controllers = list()
         self.sound_manager = SoundManager()
-        self.bullet_image = pygame.image.load(
-            "assets/bullet.png").convert_alpha()  # Charge l'image du projectile. On y accède dans la classe projectile.
         self.timer = 180  # nombre de secondes maximal
         self.loop = 0  # nombre de boucles
+
+        self.option = Optionmenu()
+
         # On initialise les deux manettes si possible
         pygame.joystick.init()
         try:
@@ -106,6 +107,8 @@ class Game:
             if self.timer == 0:
                 self.game_over()
 
+        # print(self.pressed)
+
         # On affiche le timer à l'écran
         font = pygame.font.SysFont("Bauhaus 93", 35)
         timer_text = font.render(str(self.timer) + "s", 1, (255, 0, 0))
@@ -124,7 +127,7 @@ class Game:
         # Faire bouger tous les projectiles
         for projectile in self.projectiles:
             projectile.move()
-            screen.blit(self.bullet_image, projectile.rect)  # Dessiner les projectiles à l'écran
+            screen.blit(projectile.image, projectile.rect)  # Dessiner les projectiles à l'écran
 
         if self.player_one.animation.state != 2:
             if self.controller_count == 2:
@@ -185,7 +188,7 @@ class Game:
                 if self.pressed.get(249):
                     self.player_two.increased_fall()
 
-                if self.pressed.get(pygame.K_p):
+                if self.pressed.get(36):
                     self.player_two.shoot_projectile()
 
                 if self.pressed.get(pygame.K_CARET) and self.player_two.rect.y == self.player_two.default_y:
@@ -221,8 +224,9 @@ class Game:
             elif attack_sound == 2:
                 self.sound_manager.play("attack2")
             # On déclenche l'attaque
-            self.player_two.damage(self.player_one.attack)
             self.player_one.animation.state = 2  # Etat du joueur lorsqu'il frappe
+            if self.check_collision(self.player_one, self.player_two_gr):
+                self.player_two.damage(self.player_one.attack)
         elif key == pygame.K_INSERT or controller == 'controller2':
             # idem que pour joueur 1
             attack_sound = randint(1, 2)
@@ -231,11 +235,12 @@ class Game:
             elif attack_sound == 2:
                 self.sound_manager.play("attack2")
             # On déclenche l'attaque
-            self.player_one.damage(self.player_two.attack)
             self.player_two.animation.state = 2  # Etat du joueur lorsqu'il frappe
+            if self.check_collision(self.player_two, self.player_one_gr):
+                self.player_one.damage(self.player_two.attack)
 
     def fall_attack(self, key):
-        if key == pygame.K_s:
+        if key == pygame.K_s and self.check_collision(self.player_one, self.player_two_gr):
             self.player_two.damage(0.2 * self.player_one.attack)
-        elif key == pygame.K_DOWN:
+        elif key == 249 and self.check_collision(self.player_two, self.player_one_gr):
             self.player_one.damage(0.2 * self.player_two.attack)

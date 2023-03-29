@@ -44,6 +44,7 @@ running = True
 while running:
     # on affiche le fond
     screen.blit(background, (0, 0))
+
     if game.option.isOpened:
         game.option.update(screen)
     elif game.is_playing:
