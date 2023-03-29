@@ -22,14 +22,21 @@ quit_btn = pygame.transform.scale(quit_btn, (300, 100))
 # on définit l'emplacement du bouton et sa hitbox
 quit_btn_rect = quit_btn.get_rect()
 quit_btn_rect.x = math.ceil((screen.get_width()-300) / 2)
-quit_btn_rect.y = math.ceil((screen.get_height()-100) / 2+105)
+quit_btn_rect.y = math.ceil((screen.get_height()-310) / 2+210)
 
 # idem que pour le bouton jouer
 play_btn = pygame.image.load("assets/play_button.png")
 play_btn = pygame.transform.scale(play_btn, (300, 100))
 play_btn_rect = play_btn.get_rect()
 play_btn_rect.x = math.ceil((screen.get_width()-300) / 2)
-play_btn_rect.y = math.ceil((screen.get_height()-100) / 2)
+play_btn_rect.y = math.ceil((screen.get_height()-310) / 2)
+
+# idem que pour le bouton option
+option_btn = pygame.image.load("assets/option_button.png")
+option_btn = pygame.transform.scale(option_btn, (300, 100))
+option_btn_rect = option_btn.get_rect()
+option_btn_rect.x = math.ceil((screen.get_width()-300) / 2)
+option_btn_rect.y = math.ceil((screen.get_height()-310) / 2+105)
 
 game = Game()  # On charge la classe du jeu
 
@@ -37,11 +44,14 @@ running = True
 while running:
     # on affiche le fond
     screen.blit(background, (0, 0))
-    if game.is_playing:
+    if game.option.isOpened:
+        game.option.update(screen)
+    elif game.is_playing:
         game.update(screen)
     else:
         # ajouter l'écran de bienvenue
         screen.blit(quit_btn, quit_btn_rect)
+        screen.blit(option_btn, option_btn_rect)
         screen.blit(play_btn, play_btn_rect)
 
     # mettre l'écran à jour
@@ -59,9 +69,10 @@ while running:
             if quit_btn_rect.collidepoint(event.pos):
                 pygame.quit()
                 exit()
-
             elif play_btn_rect.collidepoint(event.pos):
                 game.start()
+            elif option_btn_rect.collidepoint(event.pos):
+                game.option.open()
 
         elif event.type == pygame.KEYDOWN:
             game.pressed[event.key] = True  # on ajoute la touche pressée au dict
