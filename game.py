@@ -140,8 +140,15 @@ class Game:
                 else:
                     self.player_one.animation.state = 0
 
-                if self.joystick1.get_button(12):
+                if self.joystick1.get_button(12) and self.player_one.rect.y < self.player_one.default_y:
                     self.player_one.increased_fall()
+                elif self.joystick1.get_button(12) and self.player_one.rect.y == self.player_one.default_y:
+                    self.player_one.guard_reduction = 0.75
+                    self.player_one.animation.state = 3  # en garde
+
+                if not self.joystick1.get_button(12) and self.player_one.guard_reduction != 1:
+                    self.player_one.guard_reduction = 1
+                    self.player_one.animation.state = 0
 
                 if self.joystick1.get_button(3):
                     self.player_one.shoot_projectile()
@@ -162,8 +169,15 @@ class Game:
                 else:
                     self.player_one.animation.state = 0
 
-                if self.pressed.get(pygame.K_s):
+                if self.pressed.get(pygame.K_s) and self.player_one.rect.y < self.player_one.default_y:
                     self.player_one.increased_fall()
+                elif self.pressed.get(pygame.K_s) and self.player_one.rect.y == self.player_one.default_y:
+                    self.player_one.guard_reduction = 0.75
+                    self.player_one.animation.state = 3
+
+                if not self.pressed.get(pygame.K_s) and self.player_one.guard_reduction != 1:
+                    self.player_one.guard_reduction = 1
+                    self.player_one.animation.state = 0
 
                 if self.pressed.get(pygame.K_e):
                     self.player_one.shoot_projectile()
@@ -185,8 +199,15 @@ class Game:
                 else:
                     self.player_two.animation.state = 0
 
-                if self.pressed.get(249):
+                if self.pressed.get(249) and self.player_two.rect.y < self.player_two.default_y:
                     self.player_two.increased_fall()
+                elif self.pressed.get(249) and self.player_two.rect.y == self.player_two.default_y:
+                    self.player_two.guard_reduction = 0.75
+                    self.player_two.animation.state = 3
+
+                if not self.pressed.get(249) and self.player_two.guard_reduction != 1:
+                    self.player_two.guard_reduction = 1
+                    self.player_two.animation.state = 0
 
                 if self.pressed.get(36):
                     self.player_two.shoot_projectile()
@@ -205,8 +226,15 @@ class Game:
                 else:
                     self.player_two.animation.state = 0
 
-                if self.joystick2.get_button(12):
+                if self.joystick2.get_button(12) and self.player_two.rect.y < self.player_two.default_y:
                     self.player_two.increased_fall()
+                elif self.joystick2.get_button(12) and self.player_two.rect.y == self.player_two.default_y:
+                    self.player_two.guard_reduction = 0.75
+                    self.player_two.animation.state = 3
+
+                if not self.joystick2.get_button(12) and self.player_two.guard_reduction != 1:
+                    self.player_two.guard_reduction = 1
+                    self.player_two.animation.state = 0
 
                 if self.joystick2.get_button(3):
                     self.player_two.shoot_projectile()

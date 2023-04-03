@@ -14,6 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.jump = 0
         self.runVelocity = 5
         self.yVelocity = 0
+        self.xVelocity = 0
         # On définit les sprites
         self.animation = Animation(nb)
         self.image = self.animation.get_current_image()
@@ -32,23 +33,24 @@ class Player(pygame.sprite.Sprite):
             self.opposite_gr = self.game.player_one_gr
         self.nb = nb  # On se permet d'utiliser notre numéro de joueur dans les autres fonctions de la classe
         self.projectile_timer = 0  # Timer avant de pouvoir réutiliser un projectile
+        self.guard_reduction = 1
 
     def damage(self, amount):
         # si les deux joueurs sont en collision
-        if self.health - amount > 0:
-            self.health -= amount
+        if self.health - amount * self.guard_reduction > 0:
+            self.health -= amount * self.guard_reduction
             # On fait reculer le joueur qui quand il reçoit des dégâts → évite le spamming
             if self.game.change_directions() == "1-2" and amount == self.attack:
                 if self.nb == 1 and self.rect.x >= 50:
-                    self.rect.x -= 50
+                    self.xVelocity -= 16
                 elif self.nb == 2 and self.rect.x <= 980:
-                    self.rect.x += 50
+                    self.xVelocity += 16
             elif self.game.change_directions() == "2-1" and amount == self.attack:
                 if self.nb == 1 and self.rect.x <= 980:
-                    self.rect.x += 50
+                    self.xVelocity += 16
                 elif self.nb == 2 and self.rect.x >= 50:
-                    self.rect.x -= 50
-        elif self.health - amount <= 0:  # si le coup est fatal pour le joueur
+                    self.xVelocity -= 16
+        elif self.health - amount * self.guard_reduction <= 0:  # si le coup est fatal pour le joueur
             self.health = 0
             self.game.game_over()
 
@@ -84,6 +86,13 @@ class Player(pygame.sprite.Sprite):
                     self.rect.x += self.runVelocity
 
         self.animation.update()
+
+        # Créé le knockback
+        if self.xVelocity > 0:
+            self.xVelocity -= 1
+        elif self.xVelocity < 0:
+            self.xVelocity += 1
+        self.rect.x += self.xVelocity
 
     def shoot_projectile(self):
         if self.projectile_timer == 0:
