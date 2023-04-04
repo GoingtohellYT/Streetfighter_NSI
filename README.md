@@ -21,3 +21,14 @@ Fighting game project for 1ère NSI
 
   -> adds full controller support!
 
+29/03/2023 update :
+
+  -> adds an option menu
+  
+  -> fixes issues with the buttons
+  
+03/04/2023 update :
+
+  -> improves knockback
+  
+  -> allows players to use guard to reduce taken damage
