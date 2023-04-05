@@ -17,20 +17,23 @@ class Animation:
         spritesheet = SpriteSheet('assets/player' + str(nb) + '_guard.png')  # Joueur qui est en garde
         self.player_guard_images = spritesheet.images(1, 5)  # Découpe les images du joueur
 
-        # Redimensionner chaque image individuellement
-        for i in range(len(self.player_idle_images)):
-            self.player_idle_images[i] = pygame.transform.scale(self.player_idle_images[i], (60, 120))
-        for i in range(len(self.player_walk_images)):
-            self.player_walk_images[i] = pygame.transform.scale(self.player_walk_images[i], (60, 120))
-        for i in range(len(self.player_hit_images)):
-            self.player_hit_images[i] = pygame.transform.scale(self.player_hit_images[i], (60, 120))
-        for i in range(len(self.player_guard_images)):
-            self.player_guard_images[i] = pygame.transform.scale(self.player_guard_images[i], (60, 120))
+        self.resize(60, 120)
 
         self.player_idle_index = 0
         self.player_walk_index = 0
         self.player_hit_index = 0
         self.player_guard_index = 0
+
+    def resize(self, width, height):
+        # Redimensionner chaque image de l'animation individuellement
+        for i in range(len(self.player_idle_images)):
+            self.player_idle_images[i] = pygame.transform.scale(self.player_idle_images[i], (width, height))
+        for i in range(len(self.player_walk_images)):
+            self.player_walk_images[i] = pygame.transform.scale(self.player_walk_images[i], (width, height))
+        for i in range(len(self.player_hit_images)):
+            self.player_hit_images[i] = pygame.transform.scale(self.player_hit_images[i], (width, height))
+        for i in range(len(self.player_guard_images)):
+            self.player_guard_images[i] = pygame.transform.scale(self.player_guard_images[i], (width, height))
 
     def get_current_image(self):
         current_image = self.player_idle_images[self.player_idle_index]

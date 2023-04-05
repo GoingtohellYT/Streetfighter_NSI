@@ -23,7 +23,7 @@ class Game:
         self.timer = 180  # nombre de secondes maximal
         self.loop = 0  # nombre de boucles
 
-        self.option = Optionmenu()
+        self.option = Optionmenu(self)
 
         # On initialise les deux manettes si possible
         pygame.joystick.init()
@@ -131,7 +131,8 @@ class Game:
 
         if self.player_one.animation.state != 2:
             if self.controller_count == 2:
-                if self.joystick1.get_button(14) and self.player_one.rect.width + self.player_one.rect.x < screen.get_width():
+                if self.joystick1.get_button(
+                        14) and self.player_one.rect.width + self.player_one.rect.x < screen.get_width():
                     self.player_one.animation.state = 1
                     self.player_one.animation.left_direction = False
                 elif self.joystick1.get_button(13) and self.player_one.rect.x > 0:
@@ -154,7 +155,8 @@ class Game:
                     self.player_one.shoot_projectile()
 
                 # vérifie si le joueur peut sauter (s'il touche le sol)
-                if (self.joystick1.get_button(11) or self.joystick1.get_button(0)) and self.player_one.rect.y == self.player_one.default_y:
+                if (self.joystick1.get_button(11) or self.joystick1.get_button(
+                        0)) and self.player_one.rect.y == self.player_one.default_y:
                     self.player_one.jump = 20
 
             elif self.controller_count == 0:
@@ -186,7 +188,7 @@ class Game:
                 if self.pressed.get(pygame.K_z) and self.player_one.rect.y == self.player_one.default_y:
                     self.player_one.jump = 20
 
-        # idem pour le joueur 2
+            # idem pour le joueur 2
         if self.player_two.animation.state != 2:
             if self.controller_count == 0:
                 if self.pressed.get(
@@ -239,33 +241,34 @@ class Game:
                 if self.joystick2.get_button(3):
                     self.player_two.shoot_projectile()
 
-                if (self.joystick2.get_button(11) or self.joystick2.get_button(0)) and self.player_two.rect.y == self.player_two.default_y:
+                if (self.joystick2.get_button(11) or self.joystick2.get_button(
+                        0)) and self.player_two.rect.y == self.player_two.default_y:
                     self.player_two.jump = 20
 
     def attack(self, key, controller):
-        self.change_directions()
-        if key == pygame.K_SPACE or controller == "controller1":
-            # On choisit aléatoirement un des deux sons d'attaque
-            attack_sound = randint(1, 2)
-            if attack_sound == 1:
-                self.sound_manager.play("attack1")
-            elif attack_sound == 2:
-                self.sound_manager.play("attack2")
-            # On déclenche l'attaque
-            self.player_one.animation.state = 2  # Etat du joueur lorsqu'il frappe
-            if self.check_collision(self.player_one, self.player_two_gr):
-                self.player_two.damage(self.player_one.attack)
-        elif key == pygame.K_INSERT or controller == 'controller2':
-            # idem que pour joueur 1
-            attack_sound = randint(1, 2)
-            if attack_sound == 1:
-                self.sound_manager.play("attack1")
-            elif attack_sound == 2:
-                self.sound_manager.play("attack2")
-            # On déclenche l'attaque
-            self.player_two.animation.state = 2  # Etat du joueur lorsqu'il frappe
-            if self.check_collision(self.player_two, self.player_one_gr):
-                self.player_one.damage(self.player_two.attack)
+            self.change_directions()
+            if key == pygame.K_SPACE or controller == "controller1":
+                # On choisit aléatoirement un des deux sons d'attaque
+                attack_sound = randint(1, 2)
+                if attack_sound == 1:
+                    self.sound_manager.play("attack1")
+                elif attack_sound == 2:
+                    self.sound_manager.play("attack2")
+                # On déclenche l'attaque
+                self.player_one.animation.state = 2  # Etat du joueur lorsqu'il frappe
+                if self.check_collision(self.player_one, self.player_two_gr):
+                    self.player_two.damage(self.player_one.attack)
+            elif key == pygame.K_INSERT or controller == 'controller2':
+                # idem que pour joueur 1
+                attack_sound = randint(1, 2)
+                if attack_sound == 1:
+                    self.sound_manager.play("attack1")
+                elif attack_sound == 2:
+                    self.sound_manager.play("attack2")
+                # On déclenche l'attaque
+                self.player_two.animation.state = 2  # Etat du joueur lorsqu'il frappe
+                if self.check_collision(self.player_two, self.player_one_gr):
+                    self.player_one.damage(self.player_two.attack)
 
     def fall_attack(self, key):
         if key == pygame.K_s and self.check_collision(self.player_one, self.player_two_gr):

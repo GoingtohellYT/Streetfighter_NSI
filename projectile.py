@@ -32,7 +32,7 @@ class Projectile(pygame.sprite.Sprite):
             self.rect.y = self.rect.y + self.vy
         elif self.owner == 2 and self.game.check_collision(self, self.game.player_one_gr):
             self.remove()
-            self.game.player_one.damage(self.game.player_two.damage / 2)
+            self.game.player_one.damage(self.game.player_two.attack / 2)
 
         if self.rect.x < 0 or self.rect.x > 1080:
             self.remove()

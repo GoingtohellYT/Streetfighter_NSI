@@ -60,10 +60,10 @@ class Player(pygame.sprite.Sprite):
             if self.game.projectiles:
                 pass
         """""""""
-    
+
     def update(self, fallFactor):
         if self.projectile_timer > 0:
-            self.projectile_timer = self.projectile_timer-1
+            self.projectile_timer = self.projectile_timer - 1
 
         # Si le joueur souhaite sauter
         if self.jump > 0:
@@ -71,7 +71,7 @@ class Player(pygame.sprite.Sprite):
             self.jump -= 1
             self.yVelocity = 0
         elif self.rect.y < self.default_y:
-            self.rect.y = self.rect.y+(self.yVelocity*fallFactor)  # Faire tomber le joueur
+            self.rect.y = self.rect.y + (self.yVelocity * fallFactor)  # Faire tomber le joueur
             self.yVelocity += 1
         if self.rect.y > self.default_y:
             self.rect.y = self.default_y
@@ -79,10 +79,12 @@ class Player(pygame.sprite.Sprite):
         # Si le joueur souhaite se déplacer...
         if self.animation.state == 1:
             if self.animation.left_direction:  # ... à gauche
-                if not self.game.check_collision(self, self.opposite_gr) or self.game.check_positions(self.nb, "left"):  # On vérifie qu'il puisse le faire
+                if not self.game.check_collision(self, self.opposite_gr) or self.game.check_positions(self.nb,
+                                                                                                      "left"):  # On vérifie qu'il puisse le faire
                     self.rect.x -= self.runVelocity
             elif not self.animation.left_direction:  # ... à droite
-                if not self.game.check_collision(self, self.opposite_gr) or self.game.check_positions(self.nb, "right"):  # On vérifie qu'il puisse le faire
+                if not self.game.check_collision(self, self.opposite_gr) or self.game.check_positions(self.nb,
+                                                                                                      "right"):  # On vérifie qu'il puisse le faire
                     self.rect.x += self.runVelocity
 
         self.animation.update()
