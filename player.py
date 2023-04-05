@@ -27,10 +27,14 @@ class Player(pygame.sprite.Sprite):
             self.default_x = 260
             self.rect.x = 260
             self.opposite_gr = self.game.player_two_gr
+            # On définit une liste des touches du joueur
+            self.keys = [pygame.K_q,pygame.K_z,pygame.K_d,pygame.K_s,pygame.K_SPACE,pygame.K_e]
         elif nb == 2:
             self.default_x = 800
             self.rect.x = 800
             self.opposite_gr = self.game.player_one_gr
+            # On définit une liste des touches du joueur
+            self.keys = [pygame.K_m, pygame.K_CARET, pygame.K_ASTERISK, 249, pygame.K_COMMA, pygame.K_p]
         self.nb = nb  # On se permet d'utiliser notre numéro de joueur dans les autres fonctions de la classe
         self.projectile_timer = 0  # Timer avant de pouvoir réutiliser un projectile
         self.guard_reduction = 1

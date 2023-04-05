@@ -2,10 +2,11 @@ import pygame
 
 class Keyentry:
 
-    def __init__(self, optionmenu, entrytext, key, player, game):
+    def __init__(self, optionmenu, entrytext, key, player, game, index):
         self.optionmenu = optionmenu
         self.entrytext = entrytext
         self.key = key
+        self.index = index
         self.game = game
         self.player = player
         self.greyColor1 = (60,60,60)
@@ -32,6 +33,7 @@ class Keyentry:
             for entry,isPressed in self.game.pressed.items():
                 if isPressed:
                     self.key=entry
+                    self.player.keys[self.index] = entry
                     self.state = 0
 
 
