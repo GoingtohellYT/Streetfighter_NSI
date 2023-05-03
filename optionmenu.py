@@ -1,7 +1,7 @@
 import pygame
 from keyentry import Keyentry
 from animation import Animation
-
+from file_manager import File
 class Optionmenu:
 
     def __init__(self, game):
@@ -16,17 +16,26 @@ class Optionmenu:
         self.player1Entries = list()
         self.player2Entries = list()
 
-        self.player1Entries.append(Keyentry(self,"Se déplacer vers la gauche : ", game.player_one.keys[0],game.player_one, game, 0))
-        self.player1Entries.append(Keyentry(self, "Se déplacer vers la droite : ", game.player_one.keys[2], game.player_one, game, 2))
+        self.file = File(self.game)
+        self.file.load()
+
+        self.player1Entries.append(
+            Keyentry(self, "Se déplacer vers la gauche : ", game.player_one.keys[0], game.player_one, game, 0))
+        self.player1Entries.append(
+            Keyentry(self, "Se déplacer vers la droite : ", game.player_one.keys[2], game.player_one, game, 2))
         self.player1Entries.append(Keyentry(self, "Sauter : ", game.player_one.keys[1], game.player_one, game, 1))
-        self.player1Entries.append(Keyentry(self, "Attaque sautée : ", game.player_one.keys[3], game.player_one, game, 3))
+        self.player1Entries.append(
+            Keyentry(self, "Attaque sautée : ", game.player_one.keys[3], game.player_one, game, 3))
         self.player1Entries.append(Keyentry(self, "Attaque: ", game.player_one.keys[4], game.player_one, game, 4))
         self.player1Entries.append(Keyentry(self, "Tirer : ", game.player_one.keys[5], game.player_one, game, 5))
 
-        self.player2Entries.append(Keyentry(self, "Se déplacer vers la gauche : ", game.player_two.keys[0], game.player_two, game, 0))
-        self.player2Entries.append(Keyentry(self, "Se déplacer vers la droite : ", game.player_two.keys[2], game.player_two, game, 2))
+        self.player2Entries.append(
+            Keyentry(self, "Se déplacer vers la gauche : ", game.player_two.keys[0], game.player_two, game, 0))
+        self.player2Entries.append(
+            Keyentry(self, "Se déplacer vers la droite : ", game.player_two.keys[2], game.player_two, game, 2))
         self.player2Entries.append(Keyentry(self, "Sauter : ", game.player_two.keys[1], game.player_two, game, 1))
-        self.player2Entries.append(Keyentry(self, "Attaque sautée : ", game.player_two.keys[3], game.player_two, game, 3))
+        self.player2Entries.append(
+            Keyentry(self, "Attaque sautée : ", game.player_two.keys[3], game.player_two, game, 3))
         self.player2Entries.append(Keyentry(self, "Attaque: ", game.player_two.keys[4], game.player_two, game, 4))
         self.player2Entries.append(Keyentry(self, "Tirer : ", game.player_two.keys[5], game.player_two, game, 5))
 
@@ -63,3 +72,4 @@ class Optionmenu:
 
     def close(self):
         self.isOpened = False
+        self.file.export()

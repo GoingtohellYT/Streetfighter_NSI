@@ -98,7 +98,10 @@ class Player(pygame.sprite.Sprite):
             self.xVelocity -= 1
         elif self.xVelocity < 0:
             self.xVelocity += 1
-        self.rect.x += self.xVelocity
+        if self.xVelocity > 0 and self.rect.x < 1080 - 60:
+            self.rect.x += self.xVelocity
+        elif self.xVelocity < 0 and self.rect.x > 0:
+            self.rect.x += self.xVelocity
 
     def shoot_projectile(self):
         if self.projectile_timer == 0:

@@ -51,7 +51,6 @@ running = True
 while running:
     # on affiche le fond
     screen.blit(background, (0, 0))
-
     if game.option.isOpened:
         game.option.update(screen)
         screen.blit(back_btn, back_btn_rect)
