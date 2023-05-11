@@ -24,21 +24,21 @@ quit_btn_rect = quit_btn.get_rect()
 quit_btn_rect.x = math.ceil((screen.get_width()-300) / 2)
 quit_btn_rect.y = math.ceil((screen.get_height()-310) / 2+210)
 
-# idem que pour le bouton jouer
+# idem pour le bouton jouer
 play_btn = pygame.image.load("assets/play_button.png")
 play_btn = pygame.transform.scale(play_btn, (300, 100))
 play_btn_rect = play_btn.get_rect()
 play_btn_rect.x = math.ceil((screen.get_width()-300) / 2)
 play_btn_rect.y = math.ceil((screen.get_height()-310) / 2)
 
-# idem que pour le bouton option
+# idem pour le bouton option
 option_btn = pygame.image.load("assets/option_button.png")
 option_btn = pygame.transform.scale(option_btn, (300, 100))
 option_btn_rect = option_btn.get_rect()
 option_btn_rect.x = math.ceil((screen.get_width()-300) / 2)
 option_btn_rect.y = math.ceil((screen.get_height()-310) / 2+105)
 
-# idem que pour le bouton Retour en arrière
+# idem pour le bouton Retour en arrière
 back_btn = pygame.image.load("assets/back_button.png")
 back_btn = pygame.transform.scale(back_btn, (60, 60))
 back_btn_rect = back_btn.get_rect()

@@ -3,6 +3,7 @@ from player import Player
 from audio import SoundManager
 from random import randint
 from optionmenu import Optionmenu
+from time import sleep
 
 
 # classe qui représente le jeu
@@ -21,7 +22,7 @@ class Game:
         self.controllers = list()
         self.sound_manager = SoundManager()
         self.timer = 180  # nombre de secondes maximal
-        self.loop = 0  # nombre de boucles
+        self.loop = -60  # nombre de boucles
 
         self.option = Optionmenu(self)
 
@@ -55,7 +56,7 @@ class Game:
         self.player_one.reset()
         self.player_two.reset()
         self.timer = 180
-        self.loop = 0
+        self.loop = -60
         print("Arrêt du jeu")
 
     # On vérifie si les deux joueurs se touchent
@@ -101,18 +102,6 @@ class Game:
     def update(self, screen):
         # On ajoute 1 au nombre de tours de boucle
         self.loop += 1
-        # On vérifie si une seconde est passée
-        if self.loop % 30 == 0:
-            self.timer -= 1
-            if self.timer == 0:
-                self.game_over()
-
-        # print(self.pressed)
-
-        # On affiche le timer à l'écran
-        font = pygame.font.SysFont("Bauhaus 93", 35)
-        timer_text = font.render(str(self.timer) + "s", 1, (255, 0, 0))
-        screen.blit(timer_text, (500, 10))
 
         # afficher les joueurs
         screen.blit(self.player_one.animation.get_current_image(), self.player_one.rect)
@@ -123,6 +112,26 @@ class Game:
         # afficher les barres de vie des joueurs et les actualiser.
         self.player_one.update_health_bar(screen)
         self.player_two.update_health_bar(screen)
+
+        fight_image = pygame.image.load('assets/fight2.png').convert_alpha()
+        fight_image = pygame.transform.scale(fight_image, (430, 253))
+
+        if self.loop < 0:
+            screen.blit(fight_image, (325, 238))
+            return
+
+        # On vérifie si une seconde est passée
+        if self.loop % 30 == 0 and self.loop >= 0:
+            self.timer -= 1
+            if self.timer == 0:
+                self.game_over()
+
+        # print(self.pressed)
+
+        # On affiche le timer à l'écran
+        font = pygame.font.SysFont("Bauhaus 93", 35)
+        timer_text = font.render(str(self.timer) + "s", 1, (255, 0, 0))
+        screen.blit(timer_text, (500, 10))
 
         # Faire bouger tous les projectiles
         for projectile in self.projectiles:
