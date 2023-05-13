@@ -2,16 +2,24 @@ class File():
     def __init__(self, game):
         self.game = game
 
-    def export(self):
+    def export(self):  # Ne fonctionne pas sur mon PC fixe et seulement dans le dossier OneDrive
         player_one_keys = self.game.player_one.keys
         player_two_keys = self.game.player_two.keys
 
-        with open('config.txt', 'w') as config:
-            for i in range(len(player_one_keys)):
-                config.write(str(player_one_keys[i]) + ' ')
+        try:
 
-            for i in range(len(player_two_keys)):
-                config.write(str(player_two_keys[i]) + ' ')
+            with open('config.txt', 'w') as config:
+                for i in range(len(player_one_keys)):
+                    config.write(str(player_one_keys[i]) + ' ')
+
+                for i in range(len(player_two_keys)):
+                    config.write(str(player_two_keys[i]) + ' ')
+
+                config.flush()
+                config.close()
+
+        except OSError:
+            return
 
     def load(self):
         with open('config.txt', 'r') as config:
@@ -27,6 +35,8 @@ class File():
 
             for i in range(6, 12):
                 player_two_keys.append(int(line[i]))
+
+            config.close()
 
         self.game.player_one.keys = player_one_keys
         self.game.player_two.keys = player_two_keys

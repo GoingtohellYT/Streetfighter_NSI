@@ -1,4 +1,5 @@
 import pygame
+from moviepy.editor import VideoFileClip
 from game import Game
 import math
 
@@ -22,7 +23,7 @@ quit_btn = pygame.transform.scale(quit_btn, (300, 100))
 # on définit l'emplacement du bouton et sa hitbox
 quit_btn_rect = quit_btn.get_rect()
 quit_btn_rect.x = math.ceil((screen.get_width()-300) / 2)
-quit_btn_rect.y = math.ceil((screen.get_height()-310) / 2+210)
+quit_btn_rect.y = math.ceil((screen.get_height()-310) / 2+315)
 
 # idem pour le bouton jouer
 play_btn = pygame.image.load("assets/play_button.png")
@@ -38,12 +39,22 @@ option_btn_rect = option_btn.get_rect()
 option_btn_rect.x = math.ceil((screen.get_width()-300) / 2)
 option_btn_rect.y = math.ceil((screen.get_height()-310) / 2+105)
 
+# idem pour le bouton crédits
+credits_btn = pygame.image.load("assets/credit_btn.png")
+credits_btn = pygame.transform.scale(credits_btn, (300, 100))
+credits_btn_rect = credits_btn.get_rect()
+credits_btn_rect.x = math.ceil((screen.get_width()-300) / 2)
+credits_btn_rect.y = math.ceil((screen.get_height()-310) / 2+210)
+
+
 # idem pour le bouton Retour en arrière
 back_btn = pygame.image.load("assets/back_button.png")
 back_btn = pygame.transform.scale(back_btn, (60, 60))
 back_btn_rect = back_btn.get_rect()
 back_btn_rect.x = 5
 back_btn_rect.y = 5
+
+clip = VideoFileClip("assets/videos/creditsEasterEgg.mp4")
 
 game = Game()  # On charge la classe du jeu
 
@@ -61,6 +72,7 @@ while running:
         screen.blit(quit_btn, quit_btn_rect)
         screen.blit(option_btn, option_btn_rect)
         screen.blit(play_btn, play_btn_rect)
+        screen.blit(credits_btn, credits_btn_rect)
 
     # mettre l'écran à jour
     pygame.display.flip()
@@ -82,6 +94,10 @@ while running:
                     game.start()
                 elif option_btn_rect.collidepoint(event.pos):
                     game.option.open()
+                elif credits_btn_rect.collidepoint(event.pos):
+                    clip.preview()
+                    pygame.quit()
+                    exit()
             if back_btn_rect.collidepoint(event.pos) and game.option.isOpened:
                 game.option.close()
 
