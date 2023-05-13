@@ -53,8 +53,11 @@ back_btn = pygame.transform.scale(back_btn, (60, 60))
 back_btn_rect = back_btn.get_rect()
 back_btn_rect.x = 5
 back_btn_rect.y = 5
-
-clip = VideoFileClip("assets/videos/creditsEasterEgg.mp4")
+try:
+    egg_clip = VideoFileClip("assets/videos/creditsEasterEgg.mp4")
+except:
+    pass
+std_clip = VideoFileClip("assets/videos/credits.mp4")
 
 game = Game()  # On charge la classe du jeu
 
@@ -95,9 +98,23 @@ while running:
                 elif option_btn_rect.collidepoint(event.pos):
                     game.option.open()
                 elif credits_btn_rect.collidepoint(event.pos):
-                    clip.preview()
-                    pygame.quit()
-                    exit()
+                    with open('config.txt', 'r') as config:
+                        credits_line = config.readlines()[1]
+                        if credits_line == "easteregg":
+                            try:
+                                config.close()
+                                egg_clip.preview()
+                                pygame.quit()
+                                exit()
+                            except:
+                                continue
+                        elif credits_line == "std":
+                            config.close()
+                            std_clip.preview()
+                            pygame.quit()
+                            exit()
+                        else:
+                            continue
             if back_btn_rect.collidepoint(event.pos) and game.option.isOpened:
                 game.option.close()
 
