@@ -1,5 +1,6 @@
 import pygame
 
+
 class Keyentry:
 
     def __init__(self, optionmenu, entrytext, key, player, game, index):
@@ -9,33 +10,32 @@ class Keyentry:
         self.index = index
         self.game = game
         self.player = player
-        self.greyColor1 = (60,60,60)
+        self.greyColor1 = (60, 60, 60)
         self.greyColor2 = (80, 80, 80)
         self.whiteColor = (240, 240, 240)
-        self.state = 0 # 0: Normal, 1: Au dessus, 2: Selectionné
+        self.state = 0  # 0: Normal, 1: Au dessus, 2: Selectionné
 
     def update(self, x, y, screen):
         rect = pygame.Rect(x + 350, y, 100, 30)
 
-        # Code qui modifie l'etat du rectangle
+        # Code qui modifie l'état du rectangle
         if rect.collidepoint(pygame.mouse.get_pos()):
-            if pygame.mouse.get_pressed()[0]: # Si on click sur le carré - get_pressed renvoie une séquence de boolean pour chaque bouton de la souris
-                self.state = 2 # On met l'état selectionné
+            if pygame.mouse.get_pressed()[0]:  # Si on clique sur le carré - get_pressed renvoie une séquence de boolean pour chaque bouton de la souris
+                self.state = 2  # On met l'état selectionné
             elif self.state == 0:
-                self.state = 1 # La souris est au dessus
+                self.state = 1  # La souris est au-dessus
         else:
-            if self.state == 2 and pygame.mouse.get_pressed()[0] : # Si on click ailleurs
-                self.state = 0 # on remet l'état en normal
+            if self.state == 2 and pygame.mouse.get_pressed()[0]:  # Si on clique ailleurs
+                self.state = 0  # on remet l'état en normal
             if self.state == 1:
-                self.state = 0 # on remet l'état en normal
+                self.state = 0  # on remet l'état en normal
 
         if self.state == 2:
-            for entry,isPressed in self.game.pressed.items():
+            for entry, isPressed in self.game.pressed.items():
                 if isPressed:
-                    self.key=entry
+                    self.key = entry
                     self.player.keys[self.index] = entry
                     self.state = 0
-
 
         text = self.optionmenu.font.render(self.entrytext, 1, self.whiteColor)
         screen.blit(text, (x,y))

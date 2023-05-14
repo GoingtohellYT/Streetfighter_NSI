@@ -2,6 +2,8 @@ import pygame
 from keyentry import Keyentry
 from animation import Animation
 from file_manager import File
+
+
 class Optionmenu:
 
     def __init__(self, game):
@@ -11,7 +13,7 @@ class Optionmenu:
         self.fontTitle = pygame.font.SysFont("Bauhaus 93", 45)
         self.font = pygame.font.SysFont("Bauhaus 93", 25)
         self.smallFont = pygame.font.SysFont("Bauhaus 93", 20)
-        self.greyColor = (10,10,10)
+        self.greyColor = (10, 10, 10)
 
         self.player1Entries = list()
         self.player2Entries = list()
@@ -39,17 +41,17 @@ class Optionmenu:
         self.player2Entries.append(Keyentry(self, "Attaque: ", game.player_two.keys[4], game.player_two, game, 4))
         self.player2Entries.append(Keyentry(self, "Tirer : ", game.player_two.keys[5], game.player_two, game, 5))
 
-        self.animationplayer1 = Animation(1) # Ajoute une animation du joueur 1 pour la déco
+        self.animationplayer1 = Animation(1)  # Ajoute une animation du joueur 1 pour la déco
         self.animationplayer2 = Animation(2)
-        self.animationplayer1.resize(120, 240) # Agrandir les images
-        self.animationplayer2.resize(120, 240) # Agrandir les images
+        self.animationplayer1.resize(120, 240)  # Agrandir les images
+        self.animationplayer2.resize(120, 240)  # Agrandir les images
 
     def update(self, screen):
-        #Dessine un fond un peu transparent pour mieux contraster le texte:
+        # Dessine un fond un peu transparent pour mieux contraster le texte :
         backgroundGreyImg = pygame.Surface((1080, 650))
         backgroundGreyImg.set_alpha(180)  # Transparence
         backgroundGreyImg.fill(self.greyColor)  # Remplir l'image
-        screen.blit(backgroundGreyImg, (0, 70)) # Afficher l'image
+        screen.blit(backgroundGreyImg, (0, 70))  # Afficher l'image
 
         player1TitleText = self.fontTitle.render("Joueur 1", 1, (240, 240, 240))
         screen.blit(player1TitleText, (10, 75))

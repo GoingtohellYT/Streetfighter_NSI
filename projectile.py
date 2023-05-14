@@ -11,6 +11,7 @@ class Projectile(pygame.sprite.Sprite):
         self.rect.y = player.rect.y + player.rect.height / 2
         if player.animation.left_direction:
             self.vx = -8
+            self.image = pygame.transform.rotate(self.image, 180)
         else:
             self.vx = 8
         self.vy = 0
